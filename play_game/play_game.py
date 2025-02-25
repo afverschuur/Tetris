@@ -3,6 +3,9 @@ import pygame
 from classes.game_loop_interface import GameLoopInterface
 
 from .scoreboard import Scoreboard
+from game_assets.tetris_grid import TetrisGrid
+from game_assets.shape import Shape
+from game_assets.block import Block
 
 class PlayGame(GameLoopInterface):
 
@@ -18,6 +21,38 @@ class PlayGame(GameLoopInterface):
         self.sb = Scoreboard(game_base)
         
         # Init game assets
+        self.grid = TetrisGrid(self.game_base.screen, self.game_base.settings.grid_width, self.game_base.settings.grid_height, 25, (0,0,0))
+
+        pattern_bar = [[".....",
+                        ".....",
+                        "xxxxx",
+                        ".....",
+                        "....."],
+
+                       ["..x..",
+                        "..x..",
+                        "..x..",
+                        "..x..",
+                        "..x.."]]
+        
+        pattern_L = [[".x.",
+                      ".x.",
+                      ".xx"],
+
+                     ["...",
+                      "xxx",
+                      "x.."],
+
+                     ["xx.",
+                      ".x.",
+                      ".x."],
+
+                     ["..xs",
+                      "xxx",
+                      "..."]]
+        
+        shape_bar = Shape(pattern_L)
+        self.block = Block(5, 5, shape_bar, (255, 0, 255))
     
     ######################################
     # CHECK EVENTS
@@ -36,14 +71,14 @@ class PlayGame(GameLoopInterface):
         # RIGHT
         if event.key == pygame.K_RIGHT:
             # Start moving to the right
-            pass
+            self.block.col += 1
         # LEFT (no elif to hold still when right key and left key are both down)
         if event.key == pygame.K_LEFT:
             # Start moving to the left
-            pass
+            self.block.col -= 1
         # UP
         elif event.key == pygame.K_UP:
-            pass
+            self.block.rotate()
     
     def _check_keyup_events(self, event):
         """ Respond to keydup events (keyboard)"""
@@ -78,6 +113,9 @@ class PlayGame(GameLoopInterface):
         
         # Draw scoreboard
         self.sb.draw()
+
+        # Draw Tetris Grid
+        self.grid.draw(self.block)
 
     ######################################
     # HOOKS

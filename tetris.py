@@ -51,7 +51,7 @@ class Tetris:
         # Update settings
         self.settings.screen_width = self.screen_rect.width
         self.settings.screen_height = self.screen_rect.height
-
+        
         # Set caption
         pygame.display.set_caption(self.settings.title)
         # Hide mousepointer
@@ -111,5 +111,5 @@ class Tetris:
         self.current_loop.start()
 
 if __name__ == '__main__':
-    ai = Tetris()
-    ai.run_game()
+    game = Tetris()
+    game.run_game()
