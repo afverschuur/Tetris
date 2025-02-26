@@ -71,14 +71,17 @@ class PlayGame(GameLoopInterface):
         # RIGHT
         if event.key == pygame.K_RIGHT:
             # Start moving to the right
-            self.block.col += 1
+            if self.grid.is_valid_move(self.block, 0, 1, 0):
+                self.block.col += 1
         # LEFT (no elif to hold still when right key and left key are both down)
         if event.key == pygame.K_LEFT:
             # Start moving to the left
-            self.block.col -= 1
+            if self.grid.is_valid_move(self.block, 0, -1, 0):
+                self.block.col -= 1
         # UP
         elif event.key == pygame.K_UP:
-            self.block.rotate()
+            if self.grid.is_valid_move(self.block, 0, 0, 1):
+                self.block.rotate_clockwise()
     
     def _check_keyup_events(self, event):
         """ Respond to keydup events (keyboard)"""

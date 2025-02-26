@@ -11,6 +11,10 @@ class Block:
         self.rotations = 0
         self.pattern = self.shape.get_pattern_rotation(0)
 
-    def rotate(self):
+    def rotate_clockwise(self):
         self.rotations += 1
+        self.pattern = self.shape.get_pattern_rotation(self.rotations)
+
+    def rotate_anti_clockwise(self):
+        self.rotations -= 1
         self.pattern = self.shape.get_pattern_rotation(self.rotations)
