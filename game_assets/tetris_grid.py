@@ -69,15 +69,14 @@ class TetrisGrid:
                     self._grid[block.row + row_index][block.col + col_index] = block.color
 
     def check_completed_lines(self):
-        completed_lines = 0
-        print(self._grid)
+        completed_lines = []
         for row_index, row in enumerate(self._grid):
-            print("row:",row)
-            print(len([x for x in row if x == self.empty]))
-            if len([x for x in row if x == self.empty]) == 0:
-                completed_lines += 1
-                del self._grid[row_index]
-        for _ in range(completed_lines):
+            if len([cell for cell in row if cell == self.empty]) == 0:
+                completed_lines.append(row_index)
+
+        self._grid = [row for row_index, row in enumerate(self._grid) if row_index not in completed_lines]
+
+        for _ in completed_lines:
             self._grid.insert(0,[self.empty for _ in range(self.cols)])
 
 

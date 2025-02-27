@@ -24,7 +24,8 @@ class PlayGame(GameLoopInterface):
         self.sb = Scoreboard(game_base)
         
         # Init game assets
-        self.grid = TetrisGrid(self.game_base.screen, self.game_base.settings.grid_width, self.game_base.settings.grid_height, 25, (0,0,0))
+        self.grid = TetrisGrid(self.game_base.screen, self.game_base.settings.grid_width, self.game_base.settings.grid_height,
+                                self.game_base.settings.cell_size, self.game_base.settings.color_empty_cells)
 
         self.shapes = []
 
@@ -58,9 +59,10 @@ class PlayGame(GameLoopInterface):
         self.shapes.append(shape_bar)
         shape_L = Shape(pattern_L)
         self.shapes.append(shape_L)
-        self.block = Block(5, 5, shape_bar, (255, 0, 255))
+        
+        self._new_block()
 
-        self.GRAVITY = pygame.USEREVENT + 1
+        self.GRAVITY_PULL = pygame.USEREVENT + 1
     
     ######################################
     # CHECK EVENTS
@@ -73,17 +75,22 @@ class PlayGame(GameLoopInterface):
         # Key up events
         elif event.type == pygame.KEYUP:
             self._check_keyup_events(event)
-        if event.type == self.GRAVITY:
+        # Event of Gravity Pull
+        if event.type == self.GRAVITY_PULL:
             if self.grid.is_valid_move(self.block, 1, 0, 0):
                 self.block.apply_gravity()
             else:
-                self.grid.set_block(self.block)
-                self.grid.check_completed_lines()
-                self._new_block()
+                self._finish_fall()
+
+    def _finish_fall(self):
+        self.grid.set_block(self.block)
+        self.grid.check_completed_lines()
+        self._new_block()
 
     def _new_block(self):
-        shape = random.choice(self.shapes)
-        self.block = Block(0, self.grid.cols//2, shape, (255, 30, 70))
+        random_shape = random.choice(self.shapes)
+        random_color = random.choice(self.game_base.settings.colors)
+        self.block = Block(0, self.grid.cols//2, random_shape, random_color)
 
     
     def _check_keydown_events(self, event):
@@ -102,17 +109,16 @@ class PlayGame(GameLoopInterface):
         elif event.key == pygame.K_UP:
             if self.grid.is_valid_move(self.block, 0, 0, 1):
                 self.block.rotate_clockwise()
+        # DOWN
+        elif event.key == pygame.K_DOWN:
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), 30)
     
     def _check_keyup_events(self, event):
         """ Respond to keydup events (keyboard)"""
-        # RIGHT
-        if event.key == pygame.K_RIGHT:
-            # Stop moving to the right
-            pass
-        # LEFT
-        if event.key == pygame.K_LEFT:
-            # Stop moving to the left
-            pass
+        # DOWN
+        if event.key == pygame.K_DOWN:
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), 500)
+
 
     ######################################
     # UPDATE ASSETS
@@ -147,4 +153,4 @@ class PlayGame(GameLoopInterface):
     def start(self) -> None:
         
         # Falling block
-        pygame.time.set_timer(Event(self.GRAVITY), 500)
+        pygame.time.set_timer(Event(self.GRAVITY_PULL), 500)

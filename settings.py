@@ -19,8 +19,23 @@ class Settings:
         self.font = "assets/fonts/JockeyOne-Regular.ttf"
 
         # Grid 
-        self.grid_width = 600
-        self.grid_height = 800
+        self.cell_size = 30
+        self.grid_width = 14 * self.cell_size
+        self.grid_height = 24 * self.cell_size
+        self.color_empty_cells = (0, 0, 0)
+
+        # Shapes
+
+
+        # Colors
+
+        red = (255, 0, 0)
+        green = (0, 255, 0)
+        blue = (0, 0, 255)
+        yellow = (255, 255, 0)
+        orange = (255, 127, 0)
+
+        self.colors = [red, green, blue, yellow, orange]
 
         self.init_dynamic_settings()
 
