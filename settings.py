@@ -1,4 +1,4 @@
-import pygame
+from game_assets.block_shapes import BlockShapes
 
 class Settings:
     """ Class with all settings """
@@ -7,6 +7,7 @@ class Settings:
 
         # Game
         self.title = "Tetris"
+        self.max_framerate = 50
 
         # Screen settings
         self.bg_color = (100, 100, 100)
@@ -25,10 +26,9 @@ class Settings:
         self.color_empty_cells = (0, 0, 0)
 
         # Shapes
-
+        self.shapes = BlockShapes().shapes
 
         # Colors
-
         red = (255, 0, 0)
         green = (0, 255, 0)
         blue = (0, 0, 255)

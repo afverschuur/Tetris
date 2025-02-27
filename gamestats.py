@@ -12,6 +12,8 @@ class GameStats:
         """ Init stats """
         self.score = 0
         self.level = 1
+        self.blocks = 0
+        self.lines = 0
 
     def is_highscore(self):
         new = False
@@ -50,3 +52,9 @@ class GameStats:
         except:
             with open(file, 'w') as f:
                 json.dump(self.highscores, f)
+
+    def add_completed_lines_score(self, number_of_lines):
+        self.score += pow(2, number_of_lines) * 100
+
+    def add_set_block_score(self, score_row_index):
+        self.score += score_row_index 

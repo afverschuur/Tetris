@@ -3,17 +3,17 @@ import copy
 
 class TetrisGrid:
     """ Class representing overall grid """
-    def __init__(self, screen, width, height, cell_size, empty=0) -> None:
+    def __init__(self, game_base, width, height, cell_size, empty=0) -> None:
         # Construct grid 
-        self.screen = screen
+        self.game_base = game_base
         self.cols = width//cell_size
         self.rows = height//cell_size
         self._grid = [([empty for _ in range(self.cols)]) for _ in range(self.rows)]
         self.cell_size = cell_size
         self.width = width
         self.height = height
-        self.start_x = (screen.get_rect().width - self.width)/2
-        self.start_y = (screen.get_rect().height - self.height)/2
+        self.start_x = (self.game_base.settings.screen_width - self.width)/2
+        self.start_y = (self.game_base.settings.screen_height - self.height)/2
         self.empty = empty
 
     def setCell(self, row, col, value):
@@ -34,7 +34,7 @@ class TetrisGrid:
                         self._color_cell(block.color, block.row + row_index, block.col + col_index)
 
     def _color_cell(self, color, row_index, col_index,):
-        pygame.draw.rect(self.screen, color, pygame.Rect(self.start_x + col_index * self.cell_size, 
+        pygame.draw.rect(self.game_base.screen, color, pygame.Rect(self.start_x + col_index * self.cell_size, 
                                                               self.start_y + row_index * self.cell_size, self.cell_size - 1, self.cell_size -1)) 
         
     def is_valid_move(self, block, row, col, rotation):
@@ -63,10 +63,15 @@ class TetrisGrid:
         return True
     
     def set_block(self, block):
+        score_row_index = None
         for row_index, row in enumerate(block.pattern):
             for col_index, col_value in enumerate(row):
                 if col_value == 'x':
                     self._grid[block.row + row_index][block.col + col_index] = block.color
+                    if not score_row_index:
+                        score_row_index = block.row + row_index
+        self.game_base.stats.add_set_block_score(score_row_index)
+        
 
     def check_completed_lines(self):
         completed_lines = []
@@ -78,6 +83,8 @@ class TetrisGrid:
 
         for _ in completed_lines:
             self._grid.insert(0,[self.empty for _ in range(self.cols)])
+
+        self.game_base.stats.add_completed_lines_score(len(completed_lines))
 
 
 

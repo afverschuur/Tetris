@@ -51,7 +51,7 @@ class Tetris:
         # Update settings
         self.settings.screen_width = self.screen_rect.width
         self.settings.screen_height = self.screen_rect.height
-        
+
         # Set caption
         pygame.display.set_caption(self.settings.title)
         # Hide mousepointer
@@ -91,7 +91,7 @@ class Tetris:
             pygame.display.flip()
 
             # Wait - implementing tempo
-            clock.tick(200)
+            clock.tick(self.settings.max_framerate)
 
     def _check_events_all_loops(self, event):
         """ Responds to input during all loop """
