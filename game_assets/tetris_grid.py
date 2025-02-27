@@ -8,7 +8,7 @@ class TetrisGrid:
         self.screen = screen
         self.cols = width//cell_size
         self.rows = height//cell_size
-        self._grid = [([empty for _ in range(self.rows)]) for _ in range(self.cols)]
+        self._grid = [([empty for _ in range(self.cols)]) for _ in range(self.rows)]
         self.cell_size = cell_size
         self.width = width
         self.height = height
@@ -31,11 +31,11 @@ class TetrisGrid:
             for row_index, row in enumerate(block.pattern):
                 for col_index, col_value in enumerate(row):
                     if col_value == 'x':
-                        self._color_cell(block.color, block.col + col_index, block.row + row_index)
+                        self._color_cell(block.color, block.row + row_index, block.col + col_index)
 
     def _color_cell(self, color, row_index, col_index,):
-        pygame.draw.rect(self.screen, color, pygame.Rect(self.start_x + row_index * self.cell_size, 
-                                                              self.start_y + col_index * self.cell_size, self.cell_size - 1, self.cell_size -1)) 
+        pygame.draw.rect(self.screen, color, pygame.Rect(self.start_x + col_index * self.cell_size, 
+                                                              self.start_y + row_index * self.cell_size, self.cell_size - 1, self.cell_size -1)) 
         
     def is_valid_move(self, block, row, col, rotation):
 
@@ -46,20 +46,41 @@ class TetrisGrid:
             block_tryout.rotate_clockwise()
         
         for row_index, row in enumerate(block_tryout.pattern):
+            grid_row_index = block_tryout.row + row_index
             for col_index, col_value in enumerate(row):
-                grid_row_index = block_tryout.row + row_index
                 grid_col_index = block_tryout.col + col_index
 
                 if col_value == 'x':
                     # left-border: grid_indices not smaller than 0
                     if grid_row_index < 0 or grid_col_index < 0:
                         return False
-                    # right-border: grid_col_index not greater than self.cols
-                    if grid_row_index >= self.rows or grid_col_index >= self.cols:
-                        return False
-                    # or if cell is not empty
-                    if self._grid[grid_row_index][grid_col_index] != self.empty:
+                    try:
+                        if self._grid[grid_row_index][grid_col_index] != self.empty:
+                            return False
+                    except IndexError:
                         return False
         # otherwise its ok!
         return True
+    
+    def set_block(self, block):
+        for row_index, row in enumerate(block.pattern):
+            for col_index, col_value in enumerate(row):
+                if col_value == 'x':
+                    self._grid[block.row + row_index][block.col + col_index] = block.color
+
+    def check_completed_lines(self):
+        completed_lines = 0
+        print(self._grid)
+        for row_index, row in enumerate(self._grid):
+            print("row:",row)
+            print(len([x for x in row if x == self.empty]))
+            if len([x for x in row if x == self.empty]) == 0:
+                completed_lines += 1
+                del self._grid[row_index]
+        for _ in range(completed_lines):
+            self._grid.insert(0,[self.empty for _ in range(self.cols)])
+
+
+
+
     

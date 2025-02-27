@@ -1,4 +1,5 @@
 import pygame
+from pygame.event import Event
 
 from classes.game_loop_interface import GameLoopInterface
 
@@ -6,6 +7,8 @@ from .scoreboard import Scoreboard
 from game_assets.tetris_grid import TetrisGrid
 from game_assets.shape import Shape
 from game_assets.block import Block
+
+import random
 
 class PlayGame(GameLoopInterface):
 
@@ -23,17 +26,17 @@ class PlayGame(GameLoopInterface):
         # Init game assets
         self.grid = TetrisGrid(self.game_base.screen, self.game_base.settings.grid_width, self.game_base.settings.grid_height, 25, (0,0,0))
 
-        pattern_bar = [[".....",
-                        ".....",
-                        "xxxxx",
-                        ".....",
-                        "....."],
+        self.shapes = []
 
-                       ["..x..",
-                        "..x..",
-                        "..x..",
-                        "..x..",
-                        "..x.."]]
+        pattern_bar = [["....",
+                        "....",
+                        "xxxx",
+                        "...."],
+
+                       ["..x.",
+                        "..x.",
+                        "..x.",
+                        "..x."]]
         
         pattern_L = [[".x.",
                       ".x.",
@@ -51,8 +54,13 @@ class PlayGame(GameLoopInterface):
                       "xxx",
                       "..."]]
         
-        shape_bar = Shape(pattern_L)
+        shape_bar = Shape(pattern_bar)
+        self.shapes.append(shape_bar)
+        shape_L = Shape(pattern_L)
+        self.shapes.append(shape_L)
         self.block = Block(5, 5, shape_bar, (255, 0, 255))
+
+        self.GRAVITY = pygame.USEREVENT + 1
     
     ######################################
     # CHECK EVENTS
@@ -65,6 +73,18 @@ class PlayGame(GameLoopInterface):
         # Key up events
         elif event.type == pygame.KEYUP:
             self._check_keyup_events(event)
+        if event.type == self.GRAVITY:
+            if self.grid.is_valid_move(self.block, 1, 0, 0):
+                self.block.apply_gravity()
+            else:
+                self.grid.set_block(self.block)
+                self.grid.check_completed_lines()
+                self._new_block()
+
+    def _new_block(self):
+        shape = random.choice(self.shapes)
+        self.block = Block(0, self.grid.cols//2, shape, (255, 30, 70))
+
     
     def _check_keydown_events(self, event):
         """ Respond to keydown events (keyboard)"""
@@ -103,7 +123,7 @@ class PlayGame(GameLoopInterface):
 
         # Update scoreboard
         self.sb.update()
-
+            
 
     ######################################
     # UPDATE SCREEN
@@ -125,4 +145,6 @@ class PlayGame(GameLoopInterface):
     ######################################
 
     def start(self) -> None:
-        pass
+        
+        # Falling block
+        pygame.time.set_timer(Event(self.GRAVITY), 500)
