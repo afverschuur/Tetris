@@ -10,7 +10,8 @@ class Scoreboard:
         # Font settings
         self.text_color = (255, 255, 255)
         self.font = pygame.font.Font(self.game_base.settings.font, 32)
-        self.topmargin = 50
+        self.topmargin = (self.game_base.settings.screen_height - self.game_base.settings.grid_height)/2 + 20
+
 
         self.update()
 
@@ -21,13 +22,13 @@ class Scoreboard:
 
     def _prep_score(self):
         """ Turn score in rendered image """
-        rounded_score = self.game_base.stats.score
+        rounded_score = round(self.game_base.stats.score)
         score_str = "{:,}".format(rounded_score)
-        self.score_img = self.font.render(score_str, True, self.text_color, self.game_base.settings.bg_color)
+        self.score_img = self.font.render(f"Score: {score_str}", True, self.text_color, self.game_base.settings.bg_color)
 
         # Display score at top right
         self.score_rect = self.score_img.get_rect()
-        self.score_rect.center = self.game_base.screen_rect.center
+        self.score_rect.left = (self.game_base.settings.screen_width - self.game_base.settings.grid_width)/2
         self.score_rect.top = self.topmargin
 
     def _prep_level(self):
@@ -37,7 +38,7 @@ class Scoreboard:
 
         # Display level 
         self.level_rect = self.level_img.get_rect()
-        self.level_rect.right = self.game_base.screen_rect.right - 20
+        self.level_rect.right = (self.game_base.settings.screen_width - self.game_base.settings.grid_width)/2 + self.game_base.settings.grid_width
         self.level_rect.top = self.topmargin
 
     def draw(self):

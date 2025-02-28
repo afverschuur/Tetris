@@ -7,7 +7,8 @@ class Settings:
 
         # Game
         self.title = "Tetris"
-        self.max_framerate = 50
+        self.max_framerate = 60
+        self.level_up_treshold = 30
 
         # Screen settings
         self.bg_color = (100, 100, 100)
@@ -40,11 +41,11 @@ class Settings:
         self.init_dynamic_settings()
 
     def init_dynamic_settings(self):
-        pass
+        self.game_speed = 700
 
     def increase_speed(self):
         """ Increase speed settings """
-        pass
+        self.game_speed -= 50
 
 
         

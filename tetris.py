@@ -35,6 +35,8 @@ class Tetris:
         # Init pygame
         pygame.init()
 
+        pygame.joystick.init()
+
         # Property to hold current Game loop
         self.current_loop = None
         
@@ -69,6 +71,8 @@ class Tetris:
         # Set initial Game loop
         self.switch_loop_to(self.play_game)
 
+        self.joystick = None
+
     def run_game(self):
         """ Start the main loop for the game """
         # Start clock to set tempo
@@ -99,6 +103,9 @@ class Tetris:
             # Key 'q' to exit game 
             if event.key == pygame.K_q:
                 sys.exit()
+        
+        if event.type == pygame.JOYDEVICEADDED:
+            self.joystick = pygame.joystick.Joystick(event.device_index)
 
     def switch_loop_to(self, loop):
         """ Changes Game loop """

@@ -14,6 +14,7 @@ class GameStats:
         self.level = 1
         self.blocks = 0
         self.lines = 0
+        self.tetris = 0
 
     def is_highscore(self):
         new = False
@@ -54,7 +55,8 @@ class GameStats:
                 json.dump(self.highscores, f)
 
     def add_completed_lines_score(self, number_of_lines):
-        self.score += pow(2, number_of_lines) * 100
+        if number_of_lines > 0:
+            self.score += pow(2, number_of_lines-1) * 1000
 
     def add_set_block_score(self, score_row_index):
         self.score += score_row_index 

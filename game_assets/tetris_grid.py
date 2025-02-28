@@ -13,7 +13,7 @@ class TetrisGrid:
         self.width = width
         self.height = height
         self.start_x = (self.game_base.settings.screen_width - self.width)/2
-        self.start_y = (self.game_base.settings.screen_height - self.height)/2
+        self.start_y = (self.game_base.settings.screen_height - self.height)/2 + 80
         self.empty = empty
 
     def setCell(self, row, col, value):
@@ -70,8 +70,9 @@ class TetrisGrid:
                     self._grid[block.row + row_index][block.col + col_index] = block.color
                     if not score_row_index:
                         score_row_index = block.row + row_index
+
         self.game_base.stats.add_set_block_score(score_row_index)
-        
+        self.game_base.stats.blocks += 1
 
     def check_completed_lines(self):
         completed_lines = []
@@ -85,6 +86,10 @@ class TetrisGrid:
             self._grid.insert(0,[self.empty for _ in range(self.cols)])
 
         self.game_base.stats.add_completed_lines_score(len(completed_lines))
+
+        self.game_base.stats.lines += len(completed_lines)
+        if len(completed_lines) == 4:
+            self.game_base.stats.tetris += 1
 
 
 

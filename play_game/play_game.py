@@ -51,10 +51,21 @@ class PlayGame(GameLoopInterface):
             else:
                 self._finish_fall()
 
+        if self.game_base.joystick:
+            self._check_joystick()
+            if event.type == pygame.JOYBUTTONDOWN:
+                self._check_joystick_button_down(event)
+
     def _finish_fall(self):
         self.grid.set_block(self.block)
         self.grid.check_completed_lines()
         self._new_block()
+        self._check_level_up()
+
+    def _check_level_up(self):
+        if self.game_base.stats.blocks % self.game_base.settings.level_up_treshold == 0:
+            self.game_base.stats.level += 1
+            self.game_base.settings.increase_speed()
 
     def _new_block(self):
         random_shape = random.choice(self.game_base.settings.shapes)
@@ -90,6 +101,22 @@ class PlayGame(GameLoopInterface):
         if event.key == pygame.K_DOWN:
             pygame.time.set_timer(Event(self.GRAVITY_PULL), 500)
 
+    def _check_joystick(self):
+        (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
+        if hat_x == -1 and self.grid.is_valid_move(self.block, 0, -1, 0):
+            self.block.col -= 1
+        elif hat_x == 1 and self.grid.is_valid_move(self.block, 0, 1, 0):
+            self.block.col += 1
+        elif hat_y == -1 and self.grid.is_valid_move(self.block, 1, 0, 0):
+            self.block.row += 1
+
+    
+    def _check_joystick_button_down(self, event):
+        # JOYSTICK Button A: Rotate
+        if event.get_button(1):
+            if self.grid.is_valid_move(self.block, 0, 0, 1):
+                self.block.rotate_clockwise()
+
 
     ######################################
     # UPDATE ASSETS
@@ -110,12 +137,24 @@ class PlayGame(GameLoopInterface):
         """ Redraw assets and flip the screen"""
         # Background
         self.game_base.screen.fill(self.game_base.settings.bg_color)
+
+        self._draw_text_centered("Tetris", 52, 100)
         
         # Draw scoreboard
         self.sb.draw()
 
         # Draw Tetris Grid
         self.grid.draw(self.block)
+
+    def _draw_text_centered(self, text, size, pos_y):
+        text_bitmap = pygame.font.Font(self.game_base.settings.font, size).render(text, True, self.game_base.settings.font_color)
+        # Figure out rectangle
+        rect = text_bitmap.get_rect()
+        # Center in screen
+        rect.center = self.game_base.screen_rect.center
+        # Set position on y-axis of screen
+        rect.top = pos_y
+        self.game_base.screen.blit(text_bitmap, rect)
 
     ######################################
     # HOOKS
@@ -124,4 +163,4 @@ class PlayGame(GameLoopInterface):
     def start(self) -> None:
         
         # Start simulation gravity by start posting GRAVITY_PULL Events every ... milliseconds
-        pygame.time.set_timer(Event(self.GRAVITY_PULL), 500)
+        pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
