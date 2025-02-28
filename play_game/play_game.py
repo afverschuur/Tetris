@@ -113,7 +113,7 @@ class PlayGame(GameLoopInterface):
     
     def _check_joystick_button_down(self, event):
         # JOYSTICK Button A: Rotate
-        if event.get_button(1):
+        if self.game_base.joystick.get_button(1):
             if self.grid.is_valid_move(self.block, 0, 0, 1):
                 self.block.rotate_clockwise()
 
