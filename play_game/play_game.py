@@ -108,9 +108,10 @@ class PlayGame(GameLoopInterface):
         elif hat_x == 1 and self.grid.is_valid_move(self.block, 0, 1, 0):
             self.block.col += 1
         elif hat_y == -1 and self.grid.is_valid_move(self.block, 1, 0, 0):
-            self.block.row += 1
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), 30)
+        elif hat_y != -1 and self.grid.is_valid_move(self.block, 1, 0, 0):
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
 
-    
     def _check_joystick_button_down(self, event):
         # JOYSTICK Button A: Rotate
         if self.game_base.joystick.get_button(1):
