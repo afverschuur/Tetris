@@ -5,6 +5,8 @@
 #
 # Constructor: Feed the game base-class to give a Screen access to the screen, settings and stats 
 
+import pygame
+
 class TextScreenCenter:
     """ Class to build a screen """
     def __init__(self, game_base, bg_color, start_pos_y) -> None:
@@ -21,10 +23,10 @@ class TextScreenCenter:
         self.images = []
 
         # Feed text, pygame Font and RGB color (R, G, B) 
-    def render_text(self, text, font, color) -> None:
+    def render_text(self, text, font, size, color) -> None:
         """ Render text to image and add to images to draw """
         # Render text to image
-        img = font.render(text, True, color, self.bg_color)
+        img = pygame.font.Font(font, size).render(text, True, color, self.bg_color)
 
         # Figure out rectangle
         rect = img.get_rect()

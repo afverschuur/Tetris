@@ -34,6 +34,27 @@ class NewHighscore(GameLoopInterface):
             elif event.key == pygame.K_RETURN:
                 self._save_highscore()
 
+        if self.game_base.joystick:
+            self._check_joystick()
+            if event.type == pygame.JOYBUTTONDOWN:
+                self._check_joystick_button_down()
+
+    def _check_joystick(self):
+        (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
+        if hat_x == -1:
+            self.line.handle_input('LEFT')
+        elif hat_x == 1:
+            self.line.handle_input('RIGHT')
+        elif hat_y == -1:
+            self.line.handle_input('DOWN')
+        elif hat_y == 1:
+            self.line.handle_input('UP')
+
+    def _check_joystick_button_down(self):
+        # JOYSTICK Button A: Rotate
+        if self.game_base.joystick.get_button(1):
+            self._save_highscore()
+
     def _save_highscore(self):
         self.game_base.stats.insert_and_save_highscore(self.line.get_input())
         self.game_base.switch_loop_to(self.game_base.game_over)
@@ -52,11 +73,12 @@ class NewHighscore(GameLoopInterface):
     def update_screen(self):
         self.game_base.screen.fill(self.game_base.settings.bg_color)
         self.screen_text.draw()
-        self.line.draw(self.game_base.settings.init_pos_y + 240)
+        self.line.draw(self.game_base.settings.init_pos_y + 330)
 
     ######################################
     # HOOKS
     ######################################
 
     def start(self) -> None:
-        self.game_base.soundfx.sound('highscore', pausemusic=True, wait=False)
+        #self.game_base.soundfx.sound('highscore', pausemusic=True, wait=False)
+        pass

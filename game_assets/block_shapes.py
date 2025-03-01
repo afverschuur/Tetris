@@ -82,4 +82,4 @@ class BlockShapes:
                       ".x."]]
         
         self.shapes = [Shape(pattern_bar), Shape(pattern_L), Shape(pattern_L_reversed),
-                        Shape(pattern_Z), Shape(pattern_Z_reversed), Shape(pattern_block)]
+                        Shape(pattern_Z), Shape(pattern_Z_reversed), Shape(pattern_block), Shape(pattern_T)]

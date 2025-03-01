@@ -8,13 +8,16 @@ class TetrisGrid:
         self.game_base = game_base
         self.cols = width//cell_size
         self.rows = height//cell_size
-        self._grid = [([empty for _ in range(self.cols)]) for _ in range(self.rows)]
         self.cell_size = cell_size
         self.width = width
         self.height = height
         self.start_x = (self.game_base.settings.screen_width - self.width)/2
         self.start_y = (self.game_base.settings.screen_height - self.height)/2 + 80
         self.empty = empty
+        self.reset_grid()
+    
+    def reset_grid(self):
+        self._grid = [([self.empty for _ in range(self.cols)]) for _ in range(self.rows)]
 
     def setCell(self, row, col, value):
         self._grid[row][col] = value

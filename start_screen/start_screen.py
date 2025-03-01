@@ -1,7 +1,6 @@
 from classes.game_loop_interface import GameLoopInterface
 from start_screen.start_screen_text import StartScreenText
 import pygame
-from game_assets.ship import Ship 
 
 class StartScreen(GameLoopInterface):
     """ Class implementing start screen status """
@@ -13,7 +12,6 @@ class StartScreen(GameLoopInterface):
     def __init__(self, game_base) -> None:
         super().__init__(game_base)
         self.textscreen = StartScreenText(game_base, self.game_base.settings.bg_color, self.game_base.settings.init_pos_y)
-        self.ship = Ship(game_base)
 
     ######################################
     # CHECK EVENTS
@@ -25,7 +23,11 @@ class StartScreen(GameLoopInterface):
             # Key 's' to start the game 
             if event.key == pygame.K_s:
                 self.game_base.switch_loop_to(self.game_base.play_game)
-                    
+
+        if self.game_base.joystick:
+            if event.type == pygame.JOYBUTTONDOWN:
+                if self.game_base.joystick.get_button(1):
+                    self.game_base.switch_loop_to(self.game_base.play_game)
 
     ######################################
     # UPDATE ASSETS
@@ -43,11 +45,11 @@ class StartScreen(GameLoopInterface):
         """ Redraw assets and flip the screen"""
         self.game_base.screen.fill(self.game_base.settings.bg_color)
         self.textscreen.draw()
-        self.ship.blitme()
 
     ######################################
     # HOOKS
     ######################################
 
     def start(self) -> None:
-        self.game_base.soundfx.music('music_start')
+        #self.game_base.soundfx.music('music_start')
+        pass

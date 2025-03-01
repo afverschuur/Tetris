@@ -10,22 +10,16 @@ class StartScreenText(TextScreenCenter):
         self.settings = game_base.settings
         self.stats = game_base.stats
 
-        # Font settings
-        self.text_color_title = (8, 168, 37)
-        self.font = pygame.font.Font(self.settings.font, 28)
-        self.font_big = pygame.font.Font(self.settings.font, 42)
-        self.font_title = pygame.font.Font(self.settings.font_title, 70)
-
         self.update()
 
     def update(self):
         self.images.clear()
 
         # Title of game
-        super().render_text(self.settings.title, self.font_title, self.text_color_title)
+        super().render_text(self.settings.title, self.settings.font_title, 140, self.settings.font_color_title)
         self.add_whitespace(20)
         # Highscore
-        super().render_text("HALL OF FAME", self.font, self.game_base.settings.font_color)
+        super().render_text("HALL OF FAME", self.settings.font, 28, self.game_base.settings.font_color)
         super().add_whitespace(20)
         # Top3 of highscores
         for place, (name, highscore) in enumerate(self.stats.highscores):
@@ -33,11 +27,11 @@ class StartScreenText(TextScreenCenter):
             super().add_whitespace(10)
         super().add_whitespace(40)
         # Message to start 
-        super().render_text("Press 's' to start the game", self.font, self.game_base.settings.font_color)
+        super().render_text("Press A button to start game", self.settings.font, 28, self.game_base.settings.yellow)
         
     def _render_highscore(self, place, name, score):
         """ Turn topscore in rendered image """
         name_str = str(name).ljust(8)
         score_str = "{:,}".format(score).rjust(10, " ")
         score_str = f"{place}. {name_str} {score_str}"
-        super().render_text(score_str, self.font, self.game_base.settings.font_color)
+        super().render_text(score_str, self.settings.font_monospace, 28, self.game_base.settings.font_color)

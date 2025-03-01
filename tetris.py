@@ -5,10 +5,10 @@ from settings import Settings
 from soundfx import SoundFX
 from gamestats import GameStats
 
-#from start_screen.start_screen import StartScreen
+from start_screen.start_screen import StartScreen
 from play_game.play_game import PlayGame
-#from game_over.game_over import GameOver
-#from new_highscore.new_highscore import NewHighscore
+from game_over.game_over import GameOver
+from new_highscore.new_highscore import NewHighscore
 
 # Tetris
 #
@@ -63,13 +63,13 @@ class Tetris:
         self.soundfx = SoundFX()
 
         # Load Game loop (parts of game run in the main loop of run_game)
-        #self.start_screen = StartScreen(self)
+        self.start_screen = StartScreen(self)
         self.play_game = PlayGame(self)
-        #self.game_over = GameOver(self)
-        #self.new_highscore = NewHighscore(self)
+        self.game_over = GameOver(self)
+        self.new_highscore = NewHighscore(self)
 
         # Set initial Game loop
-        self.switch_loop_to(self.play_game)
+        self.switch_loop_to(self.start_screen)
 
         self.joystick = None
 

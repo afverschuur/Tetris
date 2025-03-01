@@ -54,7 +54,7 @@ class PlayGame(GameLoopInterface):
         if self.game_base.joystick:
             self._check_joystick()
             if event.type == pygame.JOYBUTTONDOWN:
-                self._check_joystick_button_down(event)
+                self._check_joystick_button_down()
 
     def _finish_fall(self):
         self.grid.set_block(self.block)
@@ -70,10 +70,17 @@ class PlayGame(GameLoopInterface):
     def _new_block(self):
         random_shape = random.choice(self.game_base.settings.shapes)
         random_color = random.choice(self.game_base.settings.colors)
-        self.block = Block(0, self.grid.cols//2, random_shape, random_color)
+        self.block = Block(0, (self.grid.cols//2)-1, random_shape, random_color)
         if not self.grid.is_valid_move(self.block, 1, 0, 0):
-            print("GAME OVER")
-            sys.exit()
+            self._game_over()
+
+    def _game_over(self):
+        # If new highscore, switch to New Highscore loop
+        if self.game_base.stats.is_highscore():
+            self.game_base.switch_loop_to(self.game_base.new_highscore)
+        # Else, switch Loop to Game Over loop
+        else:
+            self.game_base.switch_loop_to(self.game_base.game_over)
 
     def _check_keydown_events(self, event):
         """ Respond to keydown events (keyboard)"""
@@ -93,13 +100,13 @@ class PlayGame(GameLoopInterface):
                 self.block.rotate_clockwise()
         # DOWN
         elif event.key == pygame.K_DOWN:
-            pygame.time.set_timer(Event(self.GRAVITY_PULL), 30)
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.down_speed)
     
     def _check_keyup_events(self, event):
         """ Respond to keydup events (keyboard)"""
         # DOWN
         if event.key == pygame.K_DOWN:
-            pygame.time.set_timer(Event(self.GRAVITY_PULL), 500)
+            pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
 
     def _check_joystick(self):
         (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
@@ -112,7 +119,7 @@ class PlayGame(GameLoopInterface):
         elif hat_y != -1 and self.grid.is_valid_move(self.block, 1, 0, 0):
             pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
 
-    def _check_joystick_button_down(self, event):
+    def _check_joystick_button_down(self):
         # JOYSTICK Button A: Rotate
         if self.game_base.joystick.get_button(1):
             if self.grid.is_valid_move(self.block, 0, 0, 1):
@@ -139,7 +146,7 @@ class PlayGame(GameLoopInterface):
         # Background
         self.game_base.screen.fill(self.game_base.settings.bg_color)
 
-        self._draw_text_centered("Tetris", 52, 100)
+        self._draw_text_centered("Tetris", 60, 120)
         
         # Draw scoreboard
         self.sb.draw()
@@ -148,7 +155,7 @@ class PlayGame(GameLoopInterface):
         self.grid.draw(self.block)
 
     def _draw_text_centered(self, text, size, pos_y):
-        text_bitmap = pygame.font.Font(self.game_base.settings.font, size).render(text, True, self.game_base.settings.font_color)
+        text_bitmap = pygame.font.Font(self.game_base.settings.font, size).render(text, True, self.game_base.settings.font_color_title)
         # Figure out rectangle
         rect = text_bitmap.get_rect()
         # Center in screen
@@ -162,6 +169,8 @@ class PlayGame(GameLoopInterface):
     ######################################
 
     def start(self) -> None:
-        
+        self.game_base.settings.init_dynamic_settings()
+        self.game_base.stats.reset_stats()
+        self.grid.reset_grid()
         # Start simulation gravity by start posting GRAVITY_PULL Events every ... milliseconds
         pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
