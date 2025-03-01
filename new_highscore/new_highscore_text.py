@@ -30,6 +30,6 @@ class NewHighscoreText(TextScreenCenter):
         super().add_whitespace(250)
 
         # Message to start 
-        super().render_text("Use arrows and press 'A' to complete", self.settings.font, 28, self.game_base.settings.yellow)
+        super().render_text("Use buttons and ZR to complete", self.settings.font, 28, self.game_base.settings.yellow)
         
 

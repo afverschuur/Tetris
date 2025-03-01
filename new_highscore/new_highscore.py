@@ -35,7 +35,7 @@ class NewHighscore(GameLoopInterface):
                 self._save_highscore()
 
         if self.game_base.joystick:
-            self._check_joystick()
+            #self._check_joystick()
             if event.type == pygame.JOYBUTTONDOWN:
                 self._check_joystick_button_down()
 
@@ -56,9 +56,22 @@ class NewHighscore(GameLoopInterface):
         
 
     def _check_joystick_button_down(self):
-        # JOYSTICK Button A: Rotate
+        # JOYSTICK Button A: RIGHT
         if self.game_base.joystick.get_button(1):
+            self.line.handle_input('RIGHT')
+        # JOYSTICK Button Y: LEFT
+        elif self.game_base.joystick.get_button(3):
+            self.line.handle_input('LEFT')
+        # JOYSTICK Button X: UP
+        elif self.game_base.joystick.get_button(2):
+            self.line.handle_input('UP')
+        # JOYSTICK Button B: DOWN
+        elif self.game_base.joystick.get_button(0):
+            self.line.handle_input('DOWN')
+        # JOYSTICK Button ZR: SAVE
+        elif self.game_base.joystick.get_button(8):
             self._save_highscore()
+
 
     def _save_highscore(self):
         self.game_base.stats.insert_and_save_highscore(self.line.get_input())
