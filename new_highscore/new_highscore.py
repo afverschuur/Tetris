@@ -43,13 +43,17 @@ class NewHighscore(GameLoopInterface):
         (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
         if hat_x == -1:
             self.line.handle_input('LEFT')
+            pygame.time.delay(500)
         elif hat_x == 1:
             self.line.handle_input('RIGHT')
+            pygame.time.delay(500)
         elif hat_y == -1:
             self.line.handle_input('DOWN')
+            pygame.time.delay(500)
         elif hat_y == 1:
             self.line.handle_input('UP')
-        pygame.time.delay(500)
+            pygame.time.delay(500)
+        
 
     def _check_joystick_button_down(self):
         # JOYSTICK Button A: Rotate
