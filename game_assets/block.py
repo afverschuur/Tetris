@@ -20,3 +20,4 @@ class Block:
 
     def apply_gravity(self):
         self.row += 1
+        

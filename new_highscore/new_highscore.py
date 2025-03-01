@@ -81,5 +81,5 @@ class NewHighscore(GameLoopInterface):
     ######################################
 
     def start(self) -> None:
-        #self.game_base.soundfx.sound('highscore', pausemusic=True, wait=False)
+        self.game_base.soundfx.sound('new_highscore', pausemusic=True, wait=False)
         pass

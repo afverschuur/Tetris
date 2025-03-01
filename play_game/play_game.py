@@ -8,7 +8,6 @@ from game_assets.tetris_grid import TetrisGrid
 from game_assets.block import Block
 
 import random
-import sys
 
 class PlayGame(GameLoopInterface):
 
@@ -38,6 +37,10 @@ class PlayGame(GameLoopInterface):
     ######################################
 
     def check_events(self, event) -> None:
+
+        if self.game_base.stats.game_over:
+            self._game_over()
+            
         """ Respond to keyboard events """
         if event.type == pygame.KEYDOWN:
             self._check_keydown_events(event)
@@ -48,6 +51,7 @@ class PlayGame(GameLoopInterface):
         if event.type == self.GRAVITY_PULL:
             if self.grid.is_valid_move(self.block, 1, 0, 0):
                 self.block.apply_gravity()
+                #self.game_base.soundfx.sound("tick")
             else:
                 self._finish_fall()
 
@@ -58,6 +62,7 @@ class PlayGame(GameLoopInterface):
 
     def _finish_fall(self):
         self.grid.set_block(self.block)
+        self.game_base.soundfx.sound("set_block")
         self.grid.check_completed_lines()
         self._new_block()
         self._check_level_up()
@@ -66,16 +71,18 @@ class PlayGame(GameLoopInterface):
         if self.game_base.stats.blocks % self.game_base.settings.level_up_treshold == 0:
             self.game_base.stats.level += 1
             self.game_base.settings.increase_speed()
+            self.game_base.soundfx.sound("level_up")
 
     def _new_block(self):
         random_shape = random.choice(self.game_base.settings.shapes)
         random_color = random.choice(self.game_base.settings.colors)
         self.block = Block(0, (self.grid.cols//2)-1, random_shape, random_color)
         if not self.grid.is_valid_move(self.block, 1, 0, 0):
-            self._game_over()
-
+            self.game_base.stats.game_over = True
+            
     def _game_over(self):
         # If new highscore, switch to New Highscore loop
+        self.game_base.soundfx.sound('game_over', pausemusic=True, wait=True)
         if self.game_base.stats.is_highscore():
             self.game_base.switch_loop_to(self.game_base.new_highscore)
         # Else, switch Loop to Game Over loop
@@ -174,3 +181,7 @@ class PlayGame(GameLoopInterface):
         self.grid.reset_grid()
         # Start simulation gravity by start posting GRAVITY_PULL Events every ... milliseconds
         pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
+        self.game_base.soundfx.music("play_music")
+
+    def stop(self) -> None:
+        self.game_base.soundfx.stop_music()

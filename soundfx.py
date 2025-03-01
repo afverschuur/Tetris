@@ -9,11 +9,16 @@ class SoundFX:
 
         # Load sounds
         self.sounds = dict()
-        #self.sounds['fire'] = pygame.mixer.Sound("assets/sounds/laser.mp3")
+        self.sounds['game_over'] = pygame.mixer.Sound("assets/sounds/game_over.mp3")
+        self.sounds['set_block'] = pygame.mixer.Sound("assets/sounds/set_block.mp3")
+        self.sounds['completed_line'] = pygame.mixer.Sound("assets/sounds/completed_line.mp3")
+        self.sounds['level_up'] = pygame.mixer.Sound("assets/sounds/level_up.mp3")
+        self.sounds['new_highscore'] = pygame.mixer.Sound("assets/sounds/new_highscore.mp3")
+        self.sounds['applause'] = pygame.mixer.Sound("assets/sounds/applause.mp3")
         
         # Load music
         self.musics = dict()
-        #self.musics['music_start'] = pygame.mixer.Sound("assets/sounds/music_start.mp3")
+        self.musics['play_music'] = pygame.mixer.Sound("assets/sounds/play_music.mp3")
 
         # Open dedicated channel for music
         self.music_channel = pygame.mixer.Channel(1)
@@ -34,6 +39,10 @@ class SoundFX:
     def music(self, music):
         """ Play music (infinite) """
         self.music_channel.play(self.musics[music], -1)
+
+    def stop_music(self):
+        self.music_channel.stop()
+
 
 
 

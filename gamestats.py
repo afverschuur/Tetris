@@ -15,6 +15,7 @@ class GameStats:
         self.blocks = 0
         self.lines = 0
         self.tetris = 0
+        self.game_over = False
 
     def is_highscore(self):
         new = False
