@@ -35,25 +35,8 @@ class NewHighscore(GameLoopInterface):
                 self._save_highscore()
 
         if self.game_base.joystick:
-            #self._check_joystick()
             if event.type == pygame.JOYBUTTONDOWN:
                 self._check_joystick_button_down()
-
-    def _check_joystick(self):
-        (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
-        if hat_x == -1:
-            self.line.handle_input('LEFT')
-            pygame.time.delay(500)
-        elif hat_x == 1:
-            self.line.handle_input('RIGHT')
-            pygame.time.delay(500)
-        elif hat_y == -1:
-            self.line.handle_input('DOWN')
-            pygame.time.delay(500)
-        elif hat_y == 1:
-            self.line.handle_input('UP')
-            pygame.time.delay(500)
-        
 
     def _check_joystick_button_down(self):
         # JOYSTICK Button A: RIGHT

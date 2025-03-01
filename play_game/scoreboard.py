@@ -12,7 +12,6 @@ class Scoreboard:
         self.font = pygame.font.Font(self.game_base.settings.font, 32)
         self.topmargin = (self.game_base.settings.screen_height - self.game_base.settings.grid_height)/2 + 20
 
-
         self.update()
 
     def update(self):
@@ -22,9 +21,12 @@ class Scoreboard:
 
     def _prep_score(self):
         """ Turn score in rendered image """
+        score_color = self.text_color
+        if self.game_base.stats.is_highscore():
+            score_color = self.game_base.settings.green
         rounded_score = round(self.game_base.stats.score)
         score_str = "{:,}".format(rounded_score)
-        self.score_img = self.font.render(f"Score: {score_str}", True, self.text_color, self.game_base.settings.bg_color)
+        self.score_img = self.font.render(f"Score: {score_str}", True, score_color, self.game_base.settings.bg_color)
 
         # Display score at top right
         self.score_rect = self.score_img.get_rect()
