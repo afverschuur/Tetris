@@ -40,7 +40,7 @@ class PlayGame(GameLoopInterface):
 
         if self.game_base.stats.game_over:
             self._game_over()
-            
+
         """ Respond to keyboard events """
         if event.type == pygame.KEYDOWN:
             self._check_keydown_events(event)
@@ -56,7 +56,8 @@ class PlayGame(GameLoopInterface):
                 self._finish_fall()
 
         if self.game_base.joystick:
-            self._check_joystick()
+            if event.type == pygame.JOYHATMOTION:
+                self._check_joystick()
             if event.type == pygame.JOYBUTTONDOWN:
                 self._check_joystick_button_down()
 
