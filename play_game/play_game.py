@@ -56,8 +56,8 @@ class PlayGame(GameLoopInterface):
                 self._finish_fall()
 
         if self.game_base.joystick:
-            if event.type == pygame.JOYHATMOTION:
-                self._check_joystick()
+            #if event.type == pygame.JOYHATMOTION:
+            self._check_joystick()
             if event.type == pygame.JOYBUTTONDOWN:
                 self._check_joystick_button_down()
 
