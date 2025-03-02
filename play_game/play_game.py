@@ -63,7 +63,7 @@ class PlayGame(GameLoopInterface):
 
     def _finish_fall(self):
         self.grid.set_block(self.block)
-        self.game_base.soundfx.sound("set_block")
+        #self.game_base.soundfx.sound("set_block")
         self.grid.check_completed_lines()
         self._new_block()
         self._check_level_up()
@@ -72,7 +72,7 @@ class PlayGame(GameLoopInterface):
         if self.game_base.stats.blocks % self.game_base.settings.level_up_treshold == 0:
             self.game_base.stats.level += 1
             self.game_base.settings.increase_speed()
-            self.game_base.soundfx.sound("level_up")
+            #self.game_base.soundfx.sound("level_up")
 
     def _new_block(self):
         random_shape = random.choice(self.game_base.settings.shapes)
