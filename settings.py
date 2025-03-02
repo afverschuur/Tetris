@@ -7,7 +7,7 @@ class Settings:
 
         # Game
         self.title = "Tetris"
-        self.max_framerate = 60
+        self.max_framerate = 200
         self.level_up_treshold = 30
         self.down_speed = 30
 

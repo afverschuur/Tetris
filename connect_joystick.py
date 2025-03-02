@@ -2,7 +2,7 @@ import sys
 import pygame
 import time
 
-pygame.mixer.pre_init(buffer=1024)
+pygame.mixer.pre_init(buffer=2048)
 
 pygame.init()
 
