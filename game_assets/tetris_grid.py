@@ -94,11 +94,13 @@ class TetrisGrid:
         if len(completed_lines) == 4:
             self.game_base.stats.tetris += 1
         
+        """
         if completed_lines:
             if len(completed_lines) == 4:
                 self.game_base.soundfx.sound("applause")
             else:
                 self.game_base.soundfx.sound("completed_line")
+        """
 
 
 

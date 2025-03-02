@@ -83,7 +83,7 @@ class PlayGame(GameLoopInterface):
             
     def _game_over(self):
         # If new highscore, switch to New Highscore loop
-        self.game_base.soundfx.sound('game_over', pausemusic=True, wait=True)
+        #self.game_base.soundfx.sound('game_over', pausemusic=True, wait=True)
         if self.game_base.stats.is_highscore():
             self.game_base.switch_loop_to(self.game_base.new_highscore)
         # Else, switch Loop to Game Over loop
@@ -185,4 +185,5 @@ class PlayGame(GameLoopInterface):
         #self.game_base.soundfx.music("play_music")
 
     def stop(self) -> None:
-        self.game_base.soundfx.stop_music()
+        #self.game_base.soundfx.stop_music()
+        pass
