@@ -22,6 +22,7 @@ font_color = (255,255,255)
 joystick = None
     
 def check_events():
+    global joystick
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             # Key 'q' to exit  
@@ -45,6 +46,7 @@ def draw_text_centered(text, size, pos_y):
 
 def update_screen() -> None:
     """ Redraw assets and flip the screen"""
+    global joystick
     # Background
     screen.fill(bg_color)
 
@@ -56,7 +58,7 @@ def update_screen() -> None:
 
 # Main loop
 while True:
-
+    
     if joystick:
         sys.exit()
 
