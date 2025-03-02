@@ -58,8 +58,10 @@ def update_screen() -> None:
 
 # Main loop
 while True:
-    
+
     if joystick:
+        # Wait 1 sec
+        time.sleep(3)
         sys.exit()
 
     # Check input
@@ -67,9 +69,6 @@ while True:
 
     # update screen
     update_screen()   
-
-    # Wait 1 sec
-    time.sleep(1)
     
     # Make the last drawn screen visible
     pygame.display.flip()
