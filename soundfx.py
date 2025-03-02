@@ -10,7 +10,7 @@ class SoundFX:
         # Load sounds
         self.sounds = dict()
         # self.sounds['game_over'] = pygame.mixer.Sound("assets/sounds/game_over.mp3")
-        self.sounds['set_block'] = pygame.mixer.Sound("assets/sounds/set_block.mp3")
+        self.sounds['set_block'] = pygame.mixer.Sound("assets/sounds/set_block.wav")
         # self.sounds['completed_line'] = pygame.mixer.Sound("assets/sounds/completed_line.mp3")
         # self.sounds['level_up'] = pygame.mixer.Sound("assets/sounds/level_up.mp3")
         # self.sounds['new_highscore'] = pygame.mixer.Sound("assets/sounds/new_highscore.mp3")
