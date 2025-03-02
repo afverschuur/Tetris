@@ -182,7 +182,7 @@ class PlayGame(GameLoopInterface):
         self.grid.reset_grid()
         # Start simulation gravity by start posting GRAVITY_PULL Events every ... milliseconds
         pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
-        self.game_base.soundfx.music("play_music")
+        #self.game_base.soundfx.music("play_music")
 
     def stop(self) -> None:
         self.game_base.soundfx.stop_music()
