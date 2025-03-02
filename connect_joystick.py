@@ -2,8 +2,6 @@ import sys
 import pygame
 import time
 
-pygame.mixer.pre_init(buffer=2048)
-
 pygame.init()
 
 pygame.joystick.init() 
