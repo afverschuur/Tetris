@@ -35,6 +35,9 @@ class Tetris:
         # Init pygame
         pygame.init()
 
+        # Hide mousepointer
+        pygame.mouse.set_visible(False)
+
         pygame.joystick.init()
 
         # Property to hold current Game loop
