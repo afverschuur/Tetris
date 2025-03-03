@@ -154,7 +154,7 @@ class PlayGame(GameLoopInterface):
         # Background
         self.game_base.screen.fill(self.game_base.settings.bg_color)
 
-        self._draw_text_centered("Tetris", 60, 120)
+        self._draw_text_centered("Tetris", 60, 100)
         
         # Draw scoreboard
         self.sb.draw()
@@ -163,7 +163,7 @@ class PlayGame(GameLoopInterface):
         self.grid.draw(self.block)
 
     def _draw_text_centered(self, text, size, pos_y):
-        text_bitmap = pygame.font.Font(self.game_base.settings.font, size).render(text, True, self.game_base.settings.font_color_title)
+        text_bitmap = pygame.font.Font(self.game_base.settings.font, size).render(text, True, self.game_base.settings.font_color)
         # Figure out rectangle
         rect = text_bitmap.get_rect()
         # Center in screen
