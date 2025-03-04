@@ -51,7 +51,7 @@ class Settings:
 
     def increase_speed(self):
         """ Increase speed settings """
-        self.game_speed -= 80
+        self.game_speed -= 50
 
 
         
