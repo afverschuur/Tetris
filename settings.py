@@ -22,7 +22,7 @@ class Settings:
         self.grid_width = 14 * self.cell_size
         self.grid_height = 21 * self.cell_size
         self.color_empty_cells = (0, 0, 0)
-        self.border_color = (255, 255, 255)
+        self.border_color = (180, 180, 180)
 
         # Shapes
         self.shapes = BlockShapes().shapes
