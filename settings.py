@@ -47,7 +47,7 @@ class Settings:
         self.init_dynamic_settings()
 
     def init_dynamic_settings(self):
-        self.game_speed = 600
+        self.game_speed = 500
 
     def increase_speed(self):
         """ Increase speed settings """
