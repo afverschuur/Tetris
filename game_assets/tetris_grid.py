@@ -6,18 +6,25 @@ class TetrisGrid:
     def __init__(self, game_base, width, height, cell_size, empty=0) -> None:
         # Construct grid 
         self.game_base = game_base
-        self.cols = width//cell_size
-        self.rows = height//cell_size
+        self.cols = width//cell_size + 2 
+        self.rows = height//cell_size + 1
         self.cell_size = cell_size
-        self.width = width
-        self.height = height
+        self.width = width + 2 * self.cell_size
+        self.height = height + self.cell_size
         self.start_x = (self.game_base.settings.screen_width - self.width)/2
         self.start_y = (self.game_base.settings.screen_height - self.height)/2 + 80
         self.empty = empty
         self.reset_grid()
+
+    def make_borders(self, border_color):
+        for row_index, _ in enumerate(self._grid):
+            self._grid[row_index][0] = border_color
+            self._grid[row_index][-1] = border_color
+        self._grid[-1] = [border_color for _ in range(self.cols)]
     
     def reset_grid(self):
         self._grid = [([self.empty for _ in range(self.cols)]) for _ in range(self.rows)]
+        self.make_borders(self.game_base.settings.border_color)
 
     def setCell(self, row, col, value):
         self._grid[row][col] = value
@@ -80,13 +87,16 @@ class TetrisGrid:
     def check_completed_lines(self):
         completed_lines = []
         for row_index, row in enumerate(self._grid):
-            if len([cell for cell in row if cell == self.empty]) == 0:
+            if len([cell for cell in row if cell == self.empty]) == 0 and row_index != len(self._grid) -1:
                 completed_lines.append(row_index)
 
         self._grid = [row for row_index, row in enumerate(self._grid) if row_index not in completed_lines]
 
         for _ in completed_lines:
-            self._grid.insert(0,[self.empty for _ in range(self.cols)])
+            col = [self.empty for _ in range(self.cols)]
+            col[0] = self.game_base.settings.border_color
+            col[-1] = self.game_base.settings.border_color
+            self._grid.insert(0,col)
 
         self.game_base.stats.add_completed_lines_score(len(completed_lines))
 

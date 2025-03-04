@@ -12,7 +12,7 @@ class Settings:
         self.down_speed = 30
 
         # Screen settings
-        self.bg_color = (100, 100, 100)
+        self.bg_color = (0, 0, 0)
         self.screen_height = 1100   # overwritten in case of fullscreen
         self.screen_width = 800     # overwritten in case of fullscreen
         self.init_pos_y = self.screen_height / 6
@@ -22,6 +22,7 @@ class Settings:
         self.grid_width = 14 * self.cell_size
         self.grid_height = 21 * self.cell_size
         self.color_empty_cells = (0, 0, 0)
+        self.border_color = (255, 255, 255)
 
         # Shapes
         self.shapes = BlockShapes().shapes
