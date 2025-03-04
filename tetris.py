@@ -32,6 +32,10 @@ class Tetris:
 
     def __init__(self):
         """ Init game and create assets """
+
+        # Pre init mixer
+        pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffersize=4096)
+
         # Init pygame
         pygame.init()
 
