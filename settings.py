@@ -8,7 +8,7 @@ class Settings:
         # Game
         self.title = "Tetris"
         self.max_framerate = 200
-        self.level_up_treshold = 30
+        self.level_up_treshold = 25
         self.down_speed = 30
 
         # Screen settings
@@ -51,7 +51,7 @@ class Settings:
 
     def increase_speed(self):
         """ Increase speed settings """
-        self.game_speed -= 50
+        self.game_speed -= 40
 
 
         
