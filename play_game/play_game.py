@@ -56,8 +56,11 @@ class PlayGame(GameLoopInterface):
                 self._finish_fall()
 
         if self.game_base.joystick:
+            (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
+            if hat_y != -1 and self.grid.is_valid_move(self.block, 1, 0, 0):
+                pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
             if event.type == pygame.JOYHATMOTION:
-                self._check_joystick()
+                self._check_joystick(hat_x, hat_y)
             if event.type == pygame.JOYBUTTONDOWN:
                 self._check_joystick_button_down()
 
@@ -116,8 +119,7 @@ class PlayGame(GameLoopInterface):
         if event.key == pygame.K_DOWN:
             pygame.time.set_timer(Event(self.GRAVITY_PULL), self.game_base.settings.game_speed)
 
-    def _check_joystick(self):
-        (hat_x, hat_y) = self.game_base.joystick.get_hat(0)
+    def _check_joystick(self, hat_x ,hat_y):
         if hat_x == -1 and self.grid.is_valid_move(self.block, 0, -1, 0):
             self.block.col -= 1
         elif hat_x == 1 and self.grid.is_valid_move(self.block, 0, 1, 0):
